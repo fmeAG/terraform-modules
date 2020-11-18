@@ -113,9 +113,9 @@ resource "aws_route" "project_custom" {
 
 #######NAT Gateway
 resource "aws_nat_gateway" "nat" {
-  count = "${var.use-nat}"==true && var.vpc_id == null ? 1 :0 
+  count = var.use-nat ==true && var.vpc_id == null ? 1 :0 
   allocation_id = aws_eip.nat.0.id
-  subnet_id     = aws_subnet.projectp["${var.nat-subnet}"].id
+  subnet_id     = aws_subnet.projectp[var.nat-subnet].id
   tags = merge(var.default_tags,
 {
             "Name" = "NAT ${var.default_tags.project_name} ${var.default_tags.stage}"
@@ -124,7 +124,7 @@ resource "aws_nat_gateway" "nat" {
 }
 
 resource "aws_eip" "nat" {
-  count = "${var.use-nat}"==true && var.vpc_id == null ? 1 :0 
+  count = var.use-nat == true && var.vpc_id == null ? 1 :0 
   vpc = true
    tags = merge(var.default_tags,
 {

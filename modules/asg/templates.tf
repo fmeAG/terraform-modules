@@ -21,7 +21,7 @@ locals {
 user_data_parts = concat([{
       filename     = "1-default.sh"
       content_type = "text/x-shellscript"
-      content      = "${data.template_file.default_script.rendered}"
+      content      = data.template_file.default_script.rendered
     }], var.additional_user_data
   )
 }

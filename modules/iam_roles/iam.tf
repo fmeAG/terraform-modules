@@ -2,7 +2,9 @@ resource "aws_iam_role" "role" {
   count = var.role_arn == null ? 1 : 0
   name = var.role_name
   tags = var.default_tags
-  assume_role_policy = <<EOF
+  max_session_duration = var.max_session_duration
+  assume_role_policy = var.trust_policy == null ? (
+<<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -15,6 +17,7 @@ resource "aws_iam_role" "role" {
   ]
 }
 EOF
+) : var.trust_policy
 }
 
 resource "aws_iam_policy" "policy" {
@@ -43,7 +46,7 @@ resource "aws_iam_role_policy_attachment" "attach_arns" {
   policy_arn = each.value
 }
 locals{
-	principal = var.principal_json == null ? (length(var.aws_principals) == 0 ? 
+	principal = var.trust_policy == null ? (var.principal_json == null ? (length(var.aws_principals) == 0 ? 
 <<EOF
 {
         "Service" : "${var.service}"
@@ -55,4 +58,5 @@ EOF
 }
 EOF
 ) : var.principal_json
+) : null
 }

@@ -10,6 +10,10 @@ variable "named_policies" {
 	default={}
 }
 
+variable "max_session_duration" {
+  type    = string
+  default = null
+}
 variable "service" {
 	description = "Service that should be able to use this role"
 	default = null
@@ -46,4 +50,7 @@ variable "fake_policy_arns" {
         type = set(string)
         default=[]
 }
-
+variable trust_policy {
+  type=string
+  default=null
+}

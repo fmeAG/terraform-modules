@@ -17,3 +17,6 @@ output "arns_named_policies" {
 ]
 }
 
+output "role" {
+  value = var.role_arn == null ? (length(aws_iam_role.role) > 0 ? aws_iam_role.role.0 : object({arn = "none"})) : object({arn = var.role_arn})
+}
